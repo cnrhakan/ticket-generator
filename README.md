@@ -1,12 +1,36 @@
-# React + Vite
+# 🎟️ Ticket Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **ticket generator** built with **React**, styled using **Tailwind CSS**, and powered by **Formik** + **Yup** for form handling and validation.  
+After collecting user information through a form, the application automatically generates a visual ticket.
 
-Currently, two official plugins are available:
+## 🎯 Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project allows users to fill out a form with basic information (name, email, GitHub link, avatar, etc.), and upon submission, it dynamically creates a personalized ticket preview.  
+It demonstrates state handling, form validation, component-based architecture, and visual rendering in React.
 
-## Expanding the ESLint configuration
+📝 **This project is a solution to a challenge from [Frontend Mentor](https://www.frontendmentor.io/).**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ⚙️ Features
+
+- 🧾 **Form Input**: Collects user data like name, email, GitHub profile, and avatar  
+- ✅ **Validation**: Uses Formik & Yup to validate inputs  
+- 🎟️ **Dynamic Ticket**: Automatically creates a styled ticket with user details  
+- 🧼 **Clean UI**: Minimal and responsive design with Tailwind CSS  
+
+## 🧪 Technologies Used
+
+- **React**  
+- **Tailwind CSS**  
+- **Formik**  
+- **Yup**
+
+## 🔗 Live Demo
+
+Try the app live here:  
+👉 [Live Demo](https://ticket-generator-react.netlify.app/)
+
+
+## 🌐 Contact
+
+📎 [LinkedIn](https://www.linkedin.com/in/hakan-cinar/)  
+📧 hakan.440@hotmail.com  
