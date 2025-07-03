@@ -1,4 +1,4 @@
-function Ticket({ userData }) {
+function Ticket({ userData, values }) {
   return (
     <div className="mt-10 p-3 relative">
       <img src="/images/pattern-ticket.svg" className="w-full" />
@@ -13,9 +13,13 @@ function Ticket({ userData }) {
       </p>
 
       <div className="flex gap-4 absolute bottom-8 left-10">
-        <img src={userData.fileInfo} alt="" className="w-20 h-20 rounded-xl" />
+        <img
+          src={values.fileInfo ? URL.createObjectURL(values.fileInfo) : ""}
+          alt="Avatar"
+          className="w-20 h-20 rounded-xl"
+        />
         <div className="mb-2 flex flex-col justify-end">
-          <p className="text-neutral-50 text-2xl ">{userData.userInfo}</p>
+          <p className="text-neutral-50 text-2xl ">{values.userInfo}</p>
           <div className="flex gap-1">
             <img
               src="/images/icon-github.svg"
@@ -23,7 +27,7 @@ function Ticket({ userData }) {
               className="text-neutral-300 "
             />
             <span className="text-neutral-300 text-xl ">
-              {userData.githubInfo}
+              {values.githubInfo}
             </span>
           </div>
         </div>

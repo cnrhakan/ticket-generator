@@ -16,10 +16,6 @@ function App() {
     date: date.toLocaleDateString(),
   });
 
-  const handleTicket = (event) => {
-    event.preventDefault();
-    setShowTicket(true);
-  };
   return (
     <>
       <Background>
@@ -28,7 +24,7 @@ function App() {
           userData={userData}
           setUserData={setUserData}
           showTicket={showTicket}
-          generateTicket={handleTicket}
+          setShowTicket={setShowTicket}
         />
       </Background>
     </>

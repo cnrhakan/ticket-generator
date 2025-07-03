@@ -1,26 +1,43 @@
 import { useRef } from "react";
 import FormInput from "./FormInput";
 import Ticket from "./Ticket";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
-function Form({ userData, setUserData, generateTicket, showTicket }) {
+function Form({ userData, setUserData, setShowTicket, showTicket }) {
+  const validationSchema = yup.object({
+    fileInfo: yup
+      .mixed()
+      .required("File is required")
+      .test(
+        "fileSize",
+        "File too large, please upload a photo under 500KB",
+        (value) => {
+          return value && value.size <= 500 * 1024;
+        }
+      ),
+    userInfo: yup.string().required("Name is required"),
+    emailInfo: yup
+      .string()
+      .email("Invalid email")
+      .required("Email is required"),
+    githubInfo: yup.string().required("GitHub is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: userData,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      setUserData(values);
+      setShowTicket(true);
+      console.log(userData, values);
+    },
+  });
   const fileInputRef = useRef();
-  const getUserData = (event, type) => {
-    if (type === "file") {
-      setUserData((prev) => ({
-        ...prev,
-        [event.target.name]: URL.createObjectURL(event.target.files[0]),
-      }));
-    } else {
-      setUserData((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    }
-  };
 
   const removeImageButton = (event) => {
     event.preventDefault();
-    setUserData((prev) => ({ ...prev, fileInfo: "" }));
+    formik.setFieldValue("fileInfo", null);
     if (fileInputRef.current) {
       fileInputRef.current.value = null;
     }
@@ -37,11 +54,11 @@ function Form({ userData, setUserData, generateTicket, showTicket }) {
   return (
     <>
       {showTicket ? (
-        <Ticket userData={userData} />
+        <Ticket userData={userData} values={formik.values} />
       ) : (
         <form
           className="flex flex-col max-w-[75%] mx-auto"
-          onSubmit={generateTicket}
+          onSubmit={formik.handleSubmit}
         >
           <label htmlFor="upload-avatar" className="font-bold text-white mb-1">
             Upload Avatar
@@ -50,18 +67,21 @@ function Form({ userData, setUserData, generateTicket, showTicket }) {
           <input
             type="file"
             id="upload-avatar"
-            className="hidden"
             name="fileInfo"
+            className="hidden"
             ref={fileInputRef}
-            onChange={(e) => getUserData(e, "file")}
+            onChange={(e) => {
+              const file = e.currentTarget.files[0];
+              formik.setFieldValue("fileInfo", file);
+            }}
           />
 
-          {userData.fileInfo ? (
+          {formik.values.fileInfo ? (
             <div className="cursor-pointer flex flex-col items-center justify-center h-[8rem] border border-dashed rounded-xl bg-purple-950 text-neutral-500 px-4 py-2 gap-2">
               <img
-                src={userData.fileInfo}
-                className="border border-neutral-500 rounded-xl bg-neutral-200 h-16 w-16 object-cover"
+                src={URL.createObjectURL(formik.values.fileInfo)}
                 alt="Uploaded Avatar"
+                className="border border-neutral-500 rounded-xl bg-neutral-200 h-16 w-16 object-cover"
               />
               <div className="flex justify-center gap-2">
                 <button
@@ -100,24 +120,37 @@ function Form({ userData, setUserData, generateTicket, showTicket }) {
               Upload your photo (JPH,or PNG, max size: 500KB).
             </span>
           </div>
+          {formik.errors.fileInfo && formik.touched.fileInfo && (
+            <p className="text-red-500">{formik.errors.fileInfo}</p>
+          )}
           <FormInput
             label="Full Name"
             type="text"
-            onChange={(e) => getUserData(e, "text")}
             name="userInfo"
-          ></FormInput>
+            value={formik.values.userInfo}
+            onChange={formik.handleChange}
+            error={formik.errors.userInfo}
+            touched={formik.touched.userInfo}
+          />
           <FormInput
-            label="Email Address"
+            label="Email address"
             type="email"
             name="emailInfo"
-            onChange={(e) => getUserData(e, "email")}
-          ></FormInput>
+            value={formik.values.emailInfo}
+            onChange={formik.handleChange}
+            error={formik.errors.emailInfo}
+            touched={formik.touched.emailInfo}
+          />
           <FormInput
             label="GitHub username"
             type="text"
             name="githubInfo"
-            onChange={(e) => getUserData(e, "text")}
-          ></FormInput>
+            value={formik.values.githubInfo}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.errors.githubInfo}
+            touched={formik.touched.githubInfo}
+          />
           <button className="cursor-pointer bg-orange-500 text-purple-950 p-3 rounded-xl font-bold">
             Generate My Ticket
           </button>
